@@ -32,6 +32,7 @@ RUN \
         #upx
         upx \
         tk-dev \
+        file \
     # required because openSSL on Ubuntu 12.04 and 14.04 run out of support versions of OpenSSL
     && mkdir openssl \
     && cd openssl \
