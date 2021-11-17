@@ -1,8 +1,10 @@
-FROM i386/ubuntu:12.04
+FROM i386/ubuntu:18.04
 SHELL ["/bin/bash", "-i", "-c"]
 
 ARG PYTHON_VERSION=3.8.9
 ARG PYINSTALLER_VERSION=3.6
+
+ARG DEBIAN_FRONTEND=noninteractive
 
 ENV PYPI_URL=https://pypi.python.org/
 ENV PYPI_INDEX_URL=https://pypi.python.org/simple
@@ -25,24 +27,10 @@ RUN \
         libssl-dev \
         zlib1g-dev \
         libffi-dev \
-        #optional libraries
-        libgdbm-dev \
-        libgdbm3 \
-        uuid-dev \
         #upx
-        upx \
         tk-dev \
         file \
-    # required because openSSL on Ubuntu 12.04 and 14.04 run out of support versions of OpenSSL
-    && mkdir openssl \
-    && cd openssl \
-    # latest version, there won't be anything newer for this
-    && wget https://www.openssl.org/source/openssl-1.0.2u.tar.gz \
-    && tar -xzvf openssl-1.0.2u.tar.gz \
-    && cd openssl-1.0.2u \
-    && ./Configure linux-generic32 --prefix=$HOME/openssl --openssldir=$HOME/openssl shared zlib \
-    && make \
-    && make install \
+        openssl \
     # install pyenv
     && echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc \
     && echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc \
@@ -51,12 +39,15 @@ RUN \
     && echo 'eval "$(pyenv init -)"' >> ~/.bashrc \
     && source ~/.bashrc \
     # install python
-    && PATH="$HOME/openssl:$PATH"  CPPFLAGS="-O2 -I$HOME/openssl/include" CFLAGS="-I$HOME/openssl/include/" LDFLAGS="-L$HOME/openssl/lib -Wl,-rpath,$HOME/openssl/lib" LD_LIBRARY_PATH=$HOME/openssl/lib:$LD_LIBRARY_PATH LD_RUN_PATH="$HOME/openssl/lib" CONFIGURE_OPTS="--with-openssl=$HOME/openssl" PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install $PYTHON_VERSION \
+    && PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install $PYTHON_VERSION \
     && pyenv global $PYTHON_VERSION \
+    && export PATH="$HOME/.pyenv/bin:$PATH" \
+    && eval "$(pyenv init --path)" \
+    && eval "$(pyenv virtualenv-init -)" \
     && pip install --upgrade pip \
     # install pyinstaller
     && pip install pyinstaller==$PYINSTALLER_VERSION \
-    && mkdir /src/ 
+    && mkdir /src/
 
 VOLUME /src/
 WORKDIR /src/
