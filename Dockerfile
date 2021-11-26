@@ -51,7 +51,7 @@ RUN \
     && pip install --upgrade pip \
     # install pyinstaller
     && pip install pyinstaller==$PYINSTALLER_VERSION \
-    && mkdir /src/ \
+    && mkdir /src/
 
 VOLUME /src/
 WORKDIR /src/
