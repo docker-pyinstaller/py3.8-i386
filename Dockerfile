@@ -48,6 +48,9 @@ RUN \
     # install python
     && pyenv install $PYTHON_VERSION \
     && pyenv global $PYTHON_VERSION \
+    && export PATH="$HOME/.pyenv/bin:$PATH" \
+    && eval "$(pyenv init --path)" \
+    && eval "$(pyenv virtualenv-init -)" \
     && pip install --upgrade pip \
     # install pyinstaller
     && pip install pyinstaller==$PYINSTALLER_VERSION \
