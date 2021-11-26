@@ -44,7 +44,7 @@ RUN \
     && curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash \
     && echo 'eval "$(pyenv init -)"' >> ~/.bashrc \
     && echo 'eval "$(pyenv init --path)"' >> ~/.bashrc \
-    && source ~/.bashrc \
+    && . ~/.bashrc \
     # install python
     && pyenv install $PYTHON_VERSION \
     && pyenv global $PYTHON_VERSION \
