@@ -40,7 +40,7 @@ RUN \
     # install pyenv
     && echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc \
     && echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc \
-    && source ~/.bashrc \
+    && . ~/.bashrc \
     && curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash \
     && echo 'eval "$(pyenv init -)"' >> ~/.bashrc \
     && echo 'eval "$(pyenv init --path)"' >> ~/.bashrc \
