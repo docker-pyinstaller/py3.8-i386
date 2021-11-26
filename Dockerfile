@@ -36,7 +36,7 @@ RUN \
         tk-dev \
         file \
         openssl \
-        up \
+        upx \
     # install pyenv
     && echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc \
     && echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc \
